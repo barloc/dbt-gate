@@ -4,7 +4,7 @@ Read-only **dbt catalog gate** for IDE agents: search models/sources/exposures, 
 
 Built around a **dbt-StarRocks** layout (three-level FQN `catalog.schema.table`, layer bonuses for marts/dds), but it only reads a standard dbt `manifest.json` — no warehouse client, no adapter-specific SQL. Use it with any dbt adapter; set `index.include_catalog: false` when your warehouse has no catalog level (`schema.table`).
 
-License: [Apache-2.0](LICENSE).
+License: [Apache-2.0](LICENSE). Current release: **[v1.0.0](CHANGELOG.md#100--2026-09-27)**.
 
 ## Features
 
@@ -102,7 +102,7 @@ Tie-break: shorter alias, then FQN lexicographic order.
 ```bash
 docker login
 make docker-push                 # barloc/dbt-gate:latest
-make docker-push VERSION=v0.1.0  # also tags VERSION
+make docker-push VERSION=v1.0.0  # also tags VERSION
 ```
 
 Image: [`barloc/dbt-gate`](https://hub.docker.com/r/barloc/dbt-gate).

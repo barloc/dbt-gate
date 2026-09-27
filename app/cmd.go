@@ -14,7 +14,7 @@ func NewCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:               Name,
 		Short:             "Read-only dbt catalog gate (HTTP + MCP)",
-		Version:           "v0.1.0",
+		Version:           "v1.0.0",
 		DisableAutoGenTag: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := Run(config); err != nil {
