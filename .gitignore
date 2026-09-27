@@ -10,3 +10,4 @@ coverage.out
 /dbt-gate
 build/
 vendor/
+.publish-github/
