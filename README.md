@@ -2,7 +2,7 @@
 
 Read-only **dbt catalog gate** for IDE agents: search models/sources/exposures, fetch model cards (including compiled SQL), and lineage.
 
-Works with any dbt project that produces a standard `manifest.json`. There is no warehouse client and no StarRocks-specific runtime — StarRocks is just one common deployment shape.
+Built around a **dbt-StarRocks** layout (three-level FQN `catalog.schema.table`, layer bonuses for marts/dds), but it only reads a standard dbt `manifest.json` — no warehouse client, no adapter-specific SQL. Use it with any dbt adapter; set `index.include_catalog: false` when your warehouse has no catalog level (`schema.table`).
 
 License: [Apache-2.0](LICENSE).
 
