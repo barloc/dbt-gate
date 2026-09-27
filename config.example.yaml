@@ -1,0 +1,29 @@
+server:
+  http:
+    system:
+      port: 8090
+      host: ""
+    api:
+      port: 8080
+      host: ""
+
+product: example
+
+index:
+  # Prefer a file for local smoke, or any HTTP URL to a raw manifest.json
+  # (classic dbt docs host often serves target/manifest.json).
+  file: "app/index/testdata/manifest.mini.json"
+  # url: "https://docs.example.com/manifest.json"
+  refresh_interval: 5m
+  include_catalog: true
+  # include_catalog: false  # FQN as schema.table (Snowflake/Postgres-style)
+
+search:
+  max_hits: 20
+
+auth:
+  mode: disabled
+
+logger:
+  level: info
+  format: text

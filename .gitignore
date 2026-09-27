@@ -1,0 +1,12 @@
+.idea
+.vscode
+.env
+*.pid
+*.log
+graph.dot
+coverage.out
+/bin
+.tools/
+/dbt-gate
+build/
+vendor/

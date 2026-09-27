@@ -1,0 +1,25 @@
+server:
+  http:
+    system:
+      port: 8090
+      host: ""
+    api:
+      port: 8080
+      host: ""
+
+product: example
+
+index:
+  file: "/data/manifest.json"
+  refresh_interval: 5m
+  include_catalog: true
+
+search:
+  max_hits: 20
+
+auth:
+  mode: disabled
+
+logger:
+  level: info
+  format: text

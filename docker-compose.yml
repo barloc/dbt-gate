@@ -1,0 +1,10 @@
+services:
+  dbt-gate:
+    build: .
+    ports:
+      - "8080:8080"
+      - "8090:8090"
+    volumes:
+      - ./app/index/testdata/manifest.mini.json:/data/manifest.json:ro
+      - ./config.compose.yaml:/app/config.yaml:ro
+    command: ["--config", "/app/config.yaml"]

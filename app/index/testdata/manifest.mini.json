@@ -1,0 +1,96 @@
+{
+  "metadata": {
+    "generated_at": "2026-08-21T12:00:00.000000Z",
+    "dbt_schema_version": "https://schemas.getdbt.com/dbt/manifest/v12.json"
+  },
+  "nodes": {
+    "model.space.acme_marts_users": {
+      "unique_id": "model.space.acme_marts_users",
+      "resource_type": "model",
+      "name": "acme_marts_users",
+      "alias": "users",
+      "database": null,
+      "schema": "acme_marts",
+      "original_file_path": "models/marts/users/acme_marts_users.sql",
+      "description": "Registered platform users.",
+      "tags": ["acme", "marts"],
+      "compiled_code": "select id, phone from acme_dds.users",
+      "columns": {
+        "id": {"name": "id", "description": "User id."},
+        "phone": {"name": "phone", "description": "Normalized phone number."}
+      }
+    },
+    "model.space.acme_mysql_shards_users": {
+      "unique_id": "model.space.acme_mysql_shards_users",
+      "resource_type": "model",
+      "name": "acme_mysql_shards_users",
+      "alias": "users",
+      "database": null,
+      "schema": "acme_mysql_union",
+      "original_file_path": "models/external_catalogs/acme_mysql_shards/acme_mysql_shards_users.sql",
+      "description": "Union users across mysql shards.",
+      "tags": ["mysql"],
+      "columns": {
+        "id": {"name": "id", "description": "user id"}
+      }
+    },
+    "model.space.acme_dds_users": {
+      "unique_id": "model.space.acme_dds_users",
+      "resource_type": "model",
+      "name": "acme_dds_users",
+      "alias": "users",
+      "database": null,
+      "schema": "acme_dds",
+      "original_file_path": "models/dds/users/acme_dds_users.sql",
+      "description": "DDS users.",
+      "tags": ["dds"],
+      "columns": {}
+    },
+    "test.space.not_indexed": {
+      "unique_id": "test.space.not_indexed",
+      "resource_type": "test",
+      "name": "not_indexed",
+      "schema": "acme_marts",
+      "original_file_path": "models/marts/users/schema.yml"
+    }
+  },
+  "sources": {
+    "source.space.hdp_acme_marts.users": {
+      "unique_id": "source.space.hdp_acme_marts.users",
+      "resource_type": "source",
+      "name": "users",
+      "identifier": "users",
+      "database": null,
+      "schema": "lakehouse.acme_marts",
+      "original_file_path": "models/external_catalogs/lakehouse/acme_marts/sources.yml",
+      "description": "External mirror of acme marts users.",
+      "columns": {
+        "id": {"name": "id", "description": "id"}
+      }
+    }
+  },
+  "exposures": {
+    "exposure.space.users_dashboard": {
+      "unique_id": "exposure.space.users_dashboard",
+      "resource_type": "exposure",
+      "name": "users_dashboard",
+      "label": "Users dashboard",
+      "type": "dashboard",
+      "url": "https://bi.example/app/users",
+      "description": "Users dashboard",
+      "tags": ["bi", "acme"],
+      "owner": {"name": "Analyst", "email": "a@example.com"},
+      "depends_on": {"nodes": ["model.space.acme_marts_users", "source.space.hdp_acme_marts.users"]}
+    }
+  },
+  "parent_map": {
+    "model.space.acme_marts_users": ["model.space.acme_dds_users", "source.space.hdp_acme_marts.users"],
+    "model.space.acme_dds_users": [],
+    "exposure.space.users_dashboard": ["model.space.acme_marts_users"]
+  },
+  "child_map": {
+    "model.space.acme_dds_users": ["model.space.acme_marts_users"],
+    "model.space.acme_marts_users": ["exposure.space.users_dashboard"],
+    "source.space.hdp_acme_marts.users": ["model.space.acme_marts_users"]
+  }
+}
