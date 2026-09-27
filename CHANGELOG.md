@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.1] — 2026-09-27
+
+### Fixed
+
+- Docker image includes the example fixture so bare `docker run` can serve `/v1/search`
+- `config.example.yaml` documents `auth.mode: static`
+- Fixture/tests: dbt project id `space` → `acme`; source prefix `hdp_` → `ext_`
+
 ## [1.0.0] — 2026-09-27
 
 First public release.

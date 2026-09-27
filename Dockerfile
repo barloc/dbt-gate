@@ -10,6 +10,8 @@ FROM gcr.io/distroless/static-debian12:nonroot
 WORKDIR /app
 COPY --from=build /out/dbt-gate /app/dbt-gate
 COPY config.example.yaml /app/config.example.yaml
+# Same relative path as config.example.yaml index.file (local make run + bare docker run).
+COPY app/index/testdata/manifest.mini.json /app/app/index/testdata/manifest.mini.json
 EXPOSE 8080 8090
 USER nonroot:nonroot
 ENTRYPOINT ["/app/dbt-gate"]

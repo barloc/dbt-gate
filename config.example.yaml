@@ -23,6 +23,12 @@ search:
 
 auth:
   mode: disabled
+  # mode: static
+  # static:
+  #   sub: local
+  #   email: local@dbt-gate
+  #   name: local
+  #   groups: [analysts]
 
 logger:
   level: info

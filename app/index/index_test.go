@@ -45,9 +45,9 @@ func TestUnitBuildFQNWithoutCatalog(t *testing.T) {
 func TestUnitBuildIndexesFullManifest(t *testing.T) {
 	idx := loadMini(t)
 	require.Contains(t, idx.ByFQN, "default_catalog.acme_marts.users")
-	require.Contains(t, idx.ByUID, "model.space.acme_dds_users")
+	require.Contains(t, idx.ByUID, "model.acme.acme_dds_users")
 	require.Contains(t, idx.ByFQN, "lakehouse.acme_marts.users")
-	require.Contains(t, idx.Exposures, "exposure.space.users_dashboard")
+	require.Contains(t, idx.Exposures, "exposure.acme.users_dashboard")
 	require.Equal(t, "2026-08-21T12:00:00.000000Z", idx.Meta.ManifestGeneratedAt)
 	require.Equal(t, "example", idx.Meta.Product)
 }
@@ -237,8 +237,8 @@ func TestUnitSeedsNotStored(t *testing.T) {
 	body := []byte(`{
 	  "metadata": {"generated_at": "2026-01-01T00:00:00Z"},
 	  "nodes": {
-	    "seed.space.acme_seed_users": {
-	      "unique_id": "seed.space.acme_seed_users",
+	    "seed.acme.acme_seed_users": {
+	      "unique_id": "seed.acme.acme_seed_users",
 	      "resource_type": "seed",
 	      "name": "acme_seed_users",
 	      "alias": "users",
@@ -246,8 +246,8 @@ func TestUnitSeedsNotStored(t *testing.T) {
 	      "original_file_path": "models/acme/seeds/users.csv",
 	      "description": "seed users"
 	    },
-	    "model.space.acme_marts_users": {
-	      "unique_id": "model.space.acme_marts_users",
+	    "model.acme.acme_marts_users": {
+	      "unique_id": "model.acme.acme_marts_users",
 	      "resource_type": "model",
 	      "name": "acme_marts_users",
 	      "alias": "users",
@@ -263,8 +263,8 @@ func TestUnitSeedsNotStored(t *testing.T) {
 	}`)
 	idx, err := index.Build(body, "example", "x", "x", true)
 	require.NoError(t, err)
-	require.NotContains(t, idx.ByUID, "seed.space.acme_seed_users")
-	require.NotContains(t, idx.Stubs, "seed.space.acme_seed_users")
+	require.NotContains(t, idx.ByUID, "seed.acme.acme_seed_users")
+	require.NotContains(t, idx.Stubs, "seed.acme.acme_seed_users")
 	for _, doc := range idx.SearchDocs {
 		require.NotEqual(t, "seed", doc.ResourceType)
 	}
@@ -274,16 +274,16 @@ func TestUnitFQNCollisionPrefersModel(t *testing.T) {
 	body := []byte(`{
 	  "metadata": {"generated_at": "2026-01-01T00:00:00Z"},
 	  "nodes": {
-	    "snapshot.space.acme_users_snap": {
-	      "unique_id": "snapshot.space.acme_users_snap",
+	    "snapshot.acme.acme_users_snap": {
+	      "unique_id": "snapshot.acme.acme_users_snap",
 	      "resource_type": "snapshot",
 	      "name": "acme_users_snap",
 	      "alias": "users",
 	      "schema": "acme_marts",
 	      "original_file_path": "models/acme/snapshots/users.sql"
 	    },
-	    "model.space.acme_marts_users": {
-	      "unique_id": "model.space.acme_marts_users",
+	    "model.acme.acme_marts_users": {
+	      "unique_id": "model.acme.acme_marts_users",
 	      "resource_type": "model",
 	      "name": "acme_marts_users",
 	      "alias": "users",
@@ -301,29 +301,29 @@ func TestUnitFQNCollisionPrefersModel(t *testing.T) {
 	n := idx.ByFQN["default_catalog.acme_marts.users"]
 	require.NotNil(t, n)
 	require.Equal(t, "model", n.ResourceType)
-	require.Equal(t, "model.space.acme_marts_users", n.UniqueID)
+	require.Equal(t, "model.acme.acme_marts_users", n.UniqueID)
 }
 
 func TestUnitPruneKeepsIndexedLineage(t *testing.T) {
 	idx := loadMini(t)
-	require.Contains(t, idx.Stubs, "model.space.acme_dds_users")
-	require.Contains(t, idx.ParentMap, "model.space.acme_marts_users")
+	require.Contains(t, idx.Stubs, "model.acme.acme_dds_users")
+	require.Contains(t, idx.ParentMap, "model.acme.acme_marts_users")
 }
 
 func TestUnitOrphanModelIndexedInManifest(t *testing.T) {
 	body := []byte(`{
 	  "metadata": {"generated_at": "2026-01-01T00:00:00Z"},
 	  "nodes": {
-	    "model.space.acme_marts_users": {
-	      "unique_id": "model.space.acme_marts_users",
+	    "model.acme.acme_marts_users": {
+	      "unique_id": "model.acme.acme_marts_users",
 	      "resource_type": "model",
 	      "name": "acme_marts_users",
 	      "alias": "users",
 	      "schema": "acme_marts",
 	      "original_file_path": "models/marts/users/acme_marts_users.sql"
 	    },
-	    "model.space.orphan_unrelated": {
-	      "unique_id": "model.space.orphan_unrelated",
+	    "model.acme.orphan_unrelated": {
+	      "unique_id": "model.acme.orphan_unrelated",
 	      "resource_type": "model",
 	      "name": "orphan_unrelated",
 	      "alias": "orphan",
@@ -338,7 +338,7 @@ func TestUnitOrphanModelIndexedInManifest(t *testing.T) {
 	}`)
 	idx, err := index.Build(body, "example", "x", "x", true)
 	require.NoError(t, err)
-	require.Contains(t, idx.ByUID, "model.space.orphan_unrelated")
+	require.Contains(t, idx.ByUID, "model.acme.orphan_unrelated")
 	_, err = idx.GetModel("default_catalog.acme_misc.orphan", index.Allowlist{All: true})
 	require.NoError(t, err)
 }
