@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2] — 2026-09-27
+
+### Added
+
+- Example Cursor skill: `examples/skills/dbt-gate/SKILL.md`
+- `AGENTS.md` for IDE agents
+
 ## [1.0.1] — 2026-09-27
 
 ### Fixed
